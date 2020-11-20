@@ -22,10 +22,17 @@ namespace DermaHacker.ViewModels
         string title = string.Empty;
         public string Title
         {
+            get { return takenphoto; }
+            set { SetProperty(ref takenphoto, value); }
+        }
+
+        string takenphoto;
+        
+        public string TakenPhoto
+        {
             get { return title; }
             set { SetProperty(ref title, value); }
         }
-
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName] string propertyName = "",
             Action onChanged = null)

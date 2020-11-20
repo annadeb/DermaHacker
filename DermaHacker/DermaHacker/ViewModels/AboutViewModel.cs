@@ -10,9 +10,13 @@ namespace DermaHacker.ViewModels
         public AboutViewModel()
         {
             Title = "About";
-            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
+            OpenWebCommand = new Command(TakePhoto);
         }
 
+        public void TakePhoto()
+        {
+            TakenPhoto = "xamarin_logo.png";
+        } 
         public ICommand OpenWebCommand { get; }
     }
 }
