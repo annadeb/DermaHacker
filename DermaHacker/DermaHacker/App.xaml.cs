@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DermaHacker.Services;
+using DermaHacker.Views;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -6,11 +8,13 @@ namespace DermaHacker
 {
     public partial class App : Application
     {
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            DependencyService.Register<MockDataStore>();
+            MainPage = new AppShell();
         }
 
         protected override void OnStart()
