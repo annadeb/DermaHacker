@@ -65,23 +65,15 @@ namespace DermaHacker.ViewModels
                 Date = DateTime.UtcNow,
                 StandardImagePath = "icon_about.png",
                 ThermoImagePath = "icon_about.png",
-                //Size = new Models.Database.Size()
-                //{
-                //    Length = 22,
-                //    Width = 10,
-                //    Surface = 40,
-                //},
-                //WoundBase = new WoundBase()
-                //{
-                //    GranulationTissuePercentage = 3,
-                //    SludgePercentage = 59,
-                //    NecrosisPercentage = 25
-                //},
-                //Temperature = new Temperature()
-                //{
-                //    WoundBase = 31,
-                //    Surroundings = 27
-                //}
+                Length = 22,
+                Width = 10,
+                Surface = 40,
+                GranulationTissuePercentage = 3,
+                SludgePercentage = 59,
+                NecrosisPercentage = 25,
+                WoundBaseTemperature = 31,
+                SurroundingsTemperature = 27
+                
             });
 
             // This will pop the current page off the navigation stack

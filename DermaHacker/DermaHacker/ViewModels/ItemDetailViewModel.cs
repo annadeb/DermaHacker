@@ -1,6 +1,7 @@
 ﻿using DermaHacker.Models;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -12,6 +13,19 @@ namespace DermaHacker.ViewModels
         private string itemId;
         private string nameAndSurname;
         private string date;
+        private string standardImagePath;
+        private string thermoImagePath;
+        private double length;
+        private double width;
+        private double surface;
+        private double woundBaseTemperature;
+        private double surroundingsTemperature;
+        private double granulationTissuePercentage;
+        private double sludgePercentage;
+        private double necrosisPercentage;
+
+
+
         public string Id { get; set; }
 
         public string NameAndSurname
@@ -39,14 +53,82 @@ namespace DermaHacker.ViewModels
             }
         }
 
+        public string StandardImagePath
+        {
+            get => standardImagePath;
+            set => SetProperty(ref standardImagePath, value);
+        }
+        public string ThermoImagePath
+        {
+            get => thermoImagePath;
+            set => SetProperty(ref thermoImagePath, value);
+        }
+
+        public double Length
+        {
+            get => length;
+            set => SetProperty(ref length, value);
+        }
+        public double Width
+        {
+            get => width;
+            set => SetProperty(ref width, value);
+        }
+        public double Surface
+        {
+            get => surface;
+            set => SetProperty(ref surface, value);
+        }
+
+        public double WoundBaseTemperature
+        {
+            get => woundBaseTemperature;
+            set => SetProperty(ref woundBaseTemperature, value);
+        }
+
+        public double SurroundingsTemperature
+        {
+            get => surroundingsTemperature;
+            set => SetProperty(ref surroundingsTemperature, value);
+        }
+
+        public double GranulationTissuePercentage
+        {
+            get => granulationTissuePercentage;
+            set => SetProperty(ref granulationTissuePercentage, value);
+        }
+
+        public double SludgePercentage
+        {
+            get => sludgePercentage;
+            set => SetProperty(ref sludgePercentage, value);
+        }
+
+        public double NecrosisPercentage
+        {
+            get => necrosisPercentage;
+            set => SetProperty(ref necrosisPercentage, value);
+        }
+
+
         public async void LoadItemId(string itemId)
         {
             try
             {
-                var item = await DataStore.GetItemAsync(itemId);
-                Id = item.Id;
+                var item = await App.Database.GetReportAsync(int.Parse(itemId));
+                Id = item.ID.ToString();
                 NameAndSurname = item.NameAndSurname;
-                Date = item.Date;
+                Date = item.Date.ToString("g", CultureInfo.CreateSpecificCulture("en-us"));
+                StandardImagePath = item.StandardImagePath;
+                ThermoImagePath = item.ThermoImagePath;
+                Length = item.Length;
+                Width = item.Width;
+                Surface = item.Surface;
+                WoundBaseTemperature = item.WoundBaseTemperature;
+                SurroundingsTemperature = item.SurroundingsTemperature;
+                GranulationTissuePercentage = item.GranulationTissuePercentage;
+                SludgePercentage = item.SludgePercentage;
+                NecrosisPercentage = item.NecrosisPercentage;
             }
             catch (Exception)
             {

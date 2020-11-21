@@ -13,9 +13,6 @@ namespace DermaHacker.Models.Database
         public DateTime Date { get; set; }
         public string StandardImagePath { get; set; }
         public string ThermoImagePath { get; set; }
-        //public Size Size { get; set; }
-        //public WoundBase WoundBase { get; set; }
-        //public Temperature Temperature { get; set; }
         public double Length { get; set; }
         public double Width { get; set; }
         public double Surface { get; set; }

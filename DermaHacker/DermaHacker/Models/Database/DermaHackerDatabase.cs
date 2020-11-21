@@ -26,5 +26,10 @@ namespace DermaHacker.Models.Database
         {
             return _database.InsertAsync(report);
         }
+
+        public Task<Report> GetReportAsync(int reportId)
+        {
+            return _database.Table<Report>().FirstOrDefaultAsync(a => a.ID == reportId);
+        }
     }
 }
