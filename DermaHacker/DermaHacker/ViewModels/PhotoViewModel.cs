@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Input;
-using DermaHacker.Models.ImagePreprocessing;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using Xamarin.Essentials;

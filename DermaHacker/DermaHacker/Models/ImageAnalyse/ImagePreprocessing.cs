@@ -1,16 +1,10 @@
-﻿using Android.Content;
-using DermaHacker.Models.Extension;
+﻿using System.Drawing;
+using System.IO;
 using Emgu.CV;
 using Emgu.CV.Structure;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace DermaHacker.Models.ImagePreprocessing
+namespace DermaHacker.Models.ImageAnalyse
 {
     class ImagePreprocessing
     {
