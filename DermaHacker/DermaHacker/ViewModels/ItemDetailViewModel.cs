@@ -5,12 +5,20 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using Android;
+using Android.App;
+using Android.App.Usage;
+using Android.Content;
+using Android.Content.PM;
+using Android.Support.V4.App;
+using Android.Support.V4.Content;
 using Xamarin.Forms;
 using Syncfusion.Pdf;
 using Syncfusion.Pdf.Parsing;
 using Syncfusion.Pdf.Grid;
 using Syncfusion.Drawing;
 using Xamarin.Essentials;
+using Application = Android.App.Application;
 
 namespace DermaHacker.ViewModels
 {
@@ -35,7 +43,7 @@ namespace DermaHacker.ViewModels
 
         public ItemDetailViewModel()
         {
-            ExportCommand = new Command(OnGeneratePdf);
+            ExportCommand = new Command( OnGeneratePdf);
         }
         public string Id { get; set; }
 
@@ -146,7 +154,7 @@ namespace DermaHacker.ViewModels
                 Debug.WriteLine("Failed to Load Item");
             }
         }
-        void OnGeneratePdf()
+        async void OnGeneratePdf()
         {
             PdfDocument document = new PdfDocument();
 
@@ -175,43 +183,70 @@ namespace DermaHacker.ViewModels
             document.Save(stream);
              
             document.Close(true);
-            
-            SendEmail();
+            if (ContextCompat.CheckSelfPermission(Android.App.Application.Context, Manifest.Permission.WriteExternalStorage) !=
+                Permission.Granted)
+            {
+                var status = await Permissions.RequestAsync<Permissions.StorageWrite>();
+            }
+            var intent = Xamarin.Forms.DependencyService.Get<ISave>().SaveAndView("Output.pdf", "application / pdf", stream, PDFOpenContext.ChooseApp, Application.Context);
+            intent.SetFlags(ActivityFlags.NewTask);
+            intent.AddFlags(ActivityFlags.MultipleTask);
+            intent.AddFlags(ActivityFlags.FromBackground);
+
+            await SendEmail();
         }
        
         public async Task SendEmail()
         {
-            
-                try
-                {
-                    var message = new EmailMessage
-                    {
-                        Subject = NameAndSurname+ Date,
-                        Body = "The attachment is a pdf file.",
-                        //To = "recipients",
-                        //Subject = subject,
-                        //Body = body,
-                        //To = recipients,
-                        //Cc = ccRecipients,
-                        //Bcc = bccRecipients
-                    };
-               // var fn = "attachment.pdf";
-               // var filePath = Path.Combine(FileSystem.CacheDirectory, fn);
-              //  string folderPath = DependencyService.Get<>().SavePath(stream, filePath);
 
-              //  message.Attachments.Add(new EmailAttachment(folderPath));
-                await Email.ComposeAsync(message);
-                }
-                catch (FeatureNotSupportedException fbsEx)
+            try
+            {
+                Intent email = new Intent(Android.Content.Intent.ActionSend);
+
+                var fn = "Output.pdf";
+                string root = null;
+
+                if (Android.OS.Environment.IsExternalStorageEmulated)
                 {
-                    // Email is not supported on this device
+                    root = Android.OS.Environment.ExternalStorageDirectory.ToString();
                 }
-                catch (Exception ex)
-                {
-                    // Some other exception occurred
+                else
+                    root = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                Java.IO.File myDir = new Java.IO.File(root + "/PDFFiles");
+                myDir.Mkdir();
+
+                Java.IO.File file = new Java.IO.File(myDir, fn);
+                var uri = FileProvider.GetUriForFile(Application.Context,Android.App.Application.Context.PackageName + ".fileprovider", file);
+                
+                email.SetFlags(ActivityFlags.NewTask);
+                email.AddFlags(ActivityFlags.MultipleTask);
+                email.PutExtra(Android.Content.Intent.ExtraSubject, NameAndSurname + Date);
+                email.PutExtra(Intent.ExtraStream, uri);
+                email.SetType("application/pdf");
+                Application.Context.StartActivity(email);
                
+            }
+            catch (FeatureNotSupportedException fbsEx)
+            {
+                // Email is not supported on this device
+            }
+            catch (Exception ex)
+            {
+                // Some other exception occurred
+
             }
         }
        
+    }
+
+    internal interface ISave
+    {
+        Intent SaveAndView(string fileName, string contentType, MemoryStream stream, PDFOpenContext context, Context appctx);
+    }
+    public enum PDFOpenContext
+    {
+        InApp,
+        ChooseApp
     }
 }
