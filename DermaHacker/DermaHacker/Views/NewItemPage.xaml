@@ -11,7 +11,7 @@
             <Label Text="Name and surname" FontSize="Medium" />
             <Entry Text="{Binding NameAndSurname, Mode=TwoWay}" FontSize="Medium" />
             <Label Text="Date" FontSize="Medium" />
-            <Editor Text="{Binding Date, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" />
+             <Label Text="{Binding Date, Mode=TwoWay}" FontSize="Medium" Margin="0" />
             <StackLayout Orientation="Horizontal">
                 <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
                 <Button Text="Save" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
