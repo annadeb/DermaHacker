@@ -12,7 +12,7 @@ namespace DermaHacker.ViewModels
     {
         public PhotoViewModel()
         {
-            Title = "About";
+            Title = "Take a picture";
             //TakePhotoCommand = new Command(TakePhotoAsync());
 
             //PhotoTapped = new Command<int[]>(OnTapp());

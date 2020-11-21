@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Android.Content;
+using DermaHacker.Models;
+using DermaHacker.Models.Database;
 using DermaHacker.Models.Extension;
 using DermaHacker.Models.ImagePreprocessing;
 using Plugin.Media;
@@ -88,7 +90,7 @@ namespace DermaHacker.Views
                 await DisplayAlert("Error", ex.Message.ToString(), "Ok");
             }
         }
-        private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
+        private async void OnTouchEffectAction(object sender, TouchActionEventArgs args)
         {
             var viewPoint = args.Location;
             SKPoint point =
@@ -97,6 +99,25 @@ namespace DermaHacker.Views
 
             var actionType = args.Type;
             _touchGestureRecognizer.ProcessTouchEvent(args.Id, actionType, point);
+
+
+            //TODO wysylanie do serwera
+
+            
+            CurrentReport.Instance.Date = DateTime.UtcNow;
+            CurrentReport.Instance.StandardImagePath = "icon_about.png";
+            CurrentReport.Instance.ThermoImagePath = "icon_about.png";
+            CurrentReport.Instance.Length = 0;
+            CurrentReport.Instance.Width = 0;
+            CurrentReport.Instance.Surface = 0;
+            CurrentReport.Instance.GranulationTissuePercentage = 0;
+            CurrentReport.Instance.SludgePercentage = 0;
+            CurrentReport.Instance.NecrosisPercentage = 0;
+            CurrentReport.Instance.WoundBaseTemperature = 0;
+            CurrentReport.Instance.SurroundingsTemperature = 0;
+            var secondPage = new NewItemPage();
+            
+            await Navigation.PushAsync(secondPage);
         }
         //private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
         //{
