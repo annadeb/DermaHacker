@@ -66,7 +66,7 @@ namespace DermaHacker.ViewModels
                 StandardImagePath = "icon_about.png",
                 ThermoImagePath = "icon_about.png",
                 Length = 22,
-                Width = 10,
+                Width = 10.0,
                 Surface = 40,
                 GranulationTissuePercentage = 3,
                 SludgePercentage = 59,

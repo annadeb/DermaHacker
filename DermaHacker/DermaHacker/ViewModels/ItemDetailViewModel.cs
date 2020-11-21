@@ -1,9 +1,16 @@
 ﻿using DermaHacker.Models;
+using Syncfusion.Pdf.Graphics;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Parsing;
+using Syncfusion.Pdf.Grid;
+using Syncfusion.Drawing;
+using Xamarin.Essentials;
 
 namespace DermaHacker.ViewModels
 {
@@ -24,8 +31,12 @@ namespace DermaHacker.ViewModels
         private double sludgePercentage;
         private double necrosisPercentage;
 
+        public Command ExportCommand { get; }
 
-
+        public ItemDetailViewModel()
+        {
+            ExportCommand = new Command(OnGeneratePdf);
+        }
         public string Id { get; set; }
 
         public string NameAndSurname
@@ -135,5 +146,72 @@ namespace DermaHacker.ViewModels
                 Debug.WriteLine("Failed to Load Item");
             }
         }
+        void OnGeneratePdf()
+        {
+            PdfDocument document = new PdfDocument();
+
+            PdfPage page = document.Pages.Add();
+
+            PdfGraphics graphics = page.Graphics;
+
+            PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
+
+            graphics.DrawString("Name and Surname:"+NameAndSurname, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Date:" + Date, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Size:", font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Length:" + Length, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Width:" + Width, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Surface:" + Surface, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Wound base:", font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Granulation Tissue:" + GranulationTissuePercentage, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Sludge:"+ SludgePercentage, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Necrosis:" + NecrosisPercentage, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Temperature" , font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Woundbase:" + WoundBaseTemperature, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString("Surroundings:" + SurroundingsTemperature, font, PdfBrushes.Black, new PointF(0, 0));
+
+
+            MemoryStream stream = new MemoryStream();
+            document.Save(stream);
+             
+            document.Close(true);
+            
+            SendEmail();
+        }
+       
+        public async Task SendEmail()
+        {
+            
+                try
+                {
+                    var message = new EmailMessage
+                    {
+                        Subject = NameAndSurname+ Date,
+                        Body = "The attachment is a pdf file.",
+                        //To = "recipients",
+                        //Subject = subject,
+                        //Body = body,
+                        //To = recipients,
+                        //Cc = ccRecipients,
+                        //Bcc = bccRecipients
+                    };
+               // var fn = "attachment.pdf";
+               // var filePath = Path.Combine(FileSystem.CacheDirectory, fn);
+              //  string folderPath = DependencyService.Get<>().SavePath(stream, filePath);
+
+              //  message.Attachments.Add(new EmailAttachment(folderPath));
+                await Email.ComposeAsync(message);
+                }
+                catch (FeatureNotSupportedException fbsEx)
+                {
+                    // Email is not supported on this device
+                }
+                catch (Exception ex)
+                {
+                    // Some other exception occurred
+               
+            }
+        }
+       
     }
 }

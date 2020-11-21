@@ -33,6 +33,8 @@
             <Label Text="{Binding WoundBaseTemperature}" FontSize="Small"/>
             <Label Text="Surroundings:" FontSize="Small" />
             <Label Text="{Binding SurroundingsTemperature}" FontSize="Small"/>
+            <Button Text="Export" Command="{Binding ExportCommand}"/>
+
         </StackLayout>
     </ScrollView>
 
