@@ -14,9 +14,6 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Xamarin.Forms.Xaml;
-using Emgu.CV.CvEnum;
-using Emgu.CV;
-using Emgu.CV.Structure;
 using DermaHacker.Models.ImagePreprocessing;
 
 namespace DermaHacker.Views
@@ -63,14 +60,14 @@ namespace DermaHacker.Views
                 if (photo != null)
                 {
                     byte[] TargetImageByte = ImagePreprocessing.GetByteArrayFromStream(photo.GetStream());
-                  //  System.Drawing.Bitmap bitmap = ImagePreprocessing.GetBitmapFromImageSource(ImagePreprocessing.GetImageSourceFromByteArray(TargetImageByte));
-                   // Mat
-                     
-                    Image<Gray, byte> grayFrame = new Image<Gray, byte>(ImagePreprocessing.GetImageSourceFromByteArray(TargetImageByte).ToString());
+                    //  System.Drawing.Bitmap bitmap = ImagePreprocessing.GetBitmapFromImageSource(ImagePreprocessing.GetImageSourceFromByteArray(TargetImageByte));
+                    // Mat
+                    ImagePreprocessing.GetImage(TargetImageByte);
+                 //       Image<Gray, byte> grayFrame = new Image<Gray, byte>(ImagePreprocessing.GetImageSourceFromByteArray(TargetImageByte).ToString());
 
-                    imgCam.Source = ImagePreprocessing.GetImageSourceFromByteArray(TargetImageByte);
-                    //  Accord.Imaging.Image.SetGrayscalePalette(bitmap);
-
+                 //    imgCam.Source = ImagePreprocessing.GetImageSourceFromByteArray(TargetImageByte);
+                 //  Accord.Imaging.Image.SetGrayscalePalette(bitmap);
+                 var a =    ImagePreprocessing.GetBitmapFromStream(photo.GetStream());
 
                     using (var stream = new MemoryStream())
                     {

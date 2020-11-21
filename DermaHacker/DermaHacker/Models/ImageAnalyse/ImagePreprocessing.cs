@@ -1,5 +1,7 @@
 ﻿using Android.Content;
 using DermaHacker.Models.Extension;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,9 +14,9 @@ namespace DermaHacker.Models.ImagePreprocessing
 {
     class ImagePreprocessing
     {
-       
 
-        public static  byte[] GetByteArrayFromStream(Stream stream)
+
+        public static byte[] GetByteArrayFromStream(Stream stream)
         {
             using (MemoryStream ms = new MemoryStream())
             {
@@ -24,7 +26,7 @@ namespace DermaHacker.Models.ImagePreprocessing
         }
         public static ImageSource GetImageSourceFromByteArray(byte[] image)
         {
-          return  ImageSource.FromStream(() => new MemoryStream(image));
+            return ImageSource.FromStream(() => new MemoryStream(image));
         }
 
         //public static Bitmap GetBitmapFromImageSource(ImageSource imageSource)
@@ -34,13 +36,20 @@ namespace DermaHacker.Models.ImagePreprocessing
         //     var a = GetBitmapFromImageSourceAsync(imageSource, context);
         //    return a.Result;
         //}
-
-        //public static async Task<Android.Graphics.Bitmap> GetBitmapFromImageSourceAsync(ImageSource source, Context context)
-        //{
-        //    var handler = ExtensionMethod.GetHandler(source);
-        //    var returnValue = (Android.Graphics.Bitmap)null;
-        //    returnValue = await handler.LoadImageAsync(source, context);
-        //    return returnValue;
-        //}
+        public static   Image<Gray, byte> GetImage(byte[] array)
+        {
+            Image<Gray, byte> image = new Image<Gray, byte>(640, 480);
+            image.Bytes = array;
+            return image;
+        }
+        public static Bitmap GetBitmapFromStream(Stream stream)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                return (Bitmap)System.Drawing.Bitmap.FromStream(stream);
+            }
+          
+        }
     }
 }
