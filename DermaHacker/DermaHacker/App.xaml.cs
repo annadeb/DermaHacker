@@ -15,8 +15,13 @@ namespace DermaHacker
         {
             InitializeComponent();
 
+
             DependencyService.Register<DermaHackerDatabase>();
             MainPage = new AppShell();
+
+            //DependencyService.Register<MockDataStore>();
+            //MainPage = new PhotoView();
+
         }
 
         public static DermaHackerDatabase Database
