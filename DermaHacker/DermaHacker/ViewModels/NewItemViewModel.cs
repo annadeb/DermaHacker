@@ -11,7 +11,7 @@ namespace DermaHacker.ViewModels
     public class NewItemViewModel : BaseViewModel
     {
         private string nameAndSurname;
-        private string date;
+        private DateTime date;
 
         public NewItemViewModel()
         {
@@ -24,7 +24,7 @@ namespace DermaHacker.ViewModels
         private bool ValidateSave()
         {
             return !String.IsNullOrWhiteSpace(nameAndSurname)
-                && !String.IsNullOrWhiteSpace(date);
+                && !String.IsNullOrWhiteSpace(date.ToString());
         }
 
         public string NameAndSurname
@@ -35,8 +35,8 @@ namespace DermaHacker.ViewModels
 
         public string Date
         {
-            get => date;
-            set => SetProperty(ref date, value);
+            get => DateTime.UtcNow.ToString();
+           // set => SetProperty(ref date, value);
         }
 
         public Command SaveCommand { get; }
