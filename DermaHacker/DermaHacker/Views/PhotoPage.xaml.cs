@@ -6,7 +6,12 @@ using DermaHacker.Models.Extension;
 using DermaHacker.Models.ImagePreprocessing;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using SkiaScene;
+using SkiaScene.TouchManipulation;
+using SkiaSharp;
+using TouchTracking;
 using Xamarin.Forms;
+using Xamarin.Forms.Markup;
 using Xamarin.Forms.Xaml;
 
 namespace DermaHacker.Views
@@ -16,9 +21,13 @@ namespace DermaHacker.Views
         public PhotoPage()
         {
             InitializeComponent();
-           // this.Title = "Take Me Photo";
-        }
-
+            this.Title = "Take a picture";
+            _touchGestureRecognizer = new TouchGestureRecognizer();
+       
+    }
+ private ISKScene _scene;
+        private ITouchGestureRecognizer _touchGestureRecognizer;
+        private ISceneGestureResponder _sceneGestureResponder;
         public static async Task<Android.Graphics.Bitmap> GetBitmapFromImageSourceAsync(ImageSource source, Context context)
         {
             var handler = ExtensionMethod.GetHandler(source);
@@ -40,7 +49,6 @@ namespace DermaHacker.Views
             try
             {
 
-
                 var photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions()
                 {
                     DefaultCamera = Plugin.Media.Abstractions.CameraDevice.Rear,
@@ -50,6 +58,7 @@ namespace DermaHacker.Views
 
                 if (photo != null)
                 {
+                    this.Title = "Choose a central point of a wound";
                     byte[] targetImageByte = ImagePreprocessing.GetByteArrayFromStream(photo.GetStream());
                     var imagesource = ImagePreprocessing.GetImageSourceFromByteArray(targetImageByte);
                     imgCam.Source = imagesource;
@@ -79,6 +88,64 @@ namespace DermaHacker.Views
                 await DisplayAlert("Error", ex.Message.ToString(), "Ok");
             }
         }
+        private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
+        {
+            var viewPoint = args.Location;
+            SKPoint point =
+                new SKPoint((float)(canvasView.CanvasSize.Width * viewPoint.X / canvasView.Width),
+                    (float)(canvasView.CanvasSize.Height * viewPoint.Y / canvasView.Height));
 
+            var actionType = args.Type;
+            _touchGestureRecognizer.ProcessTouchEvent(args.Id, actionType, point);
+        }
+        //private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
+        //{
+        //    var viewPoint = args.Location;
+        //    SKPoint point =
+        //        new SKPoint((float)(imgCam.Width * viewPoint.X / imgCam.Width),
+        //            (float)(imgCam.Height * viewPoint.Y / imgCam.Height));
+
+        //    var actionType = args.Type;
+        //    _touchGestureRecognizer.ProcessTouchEvent(args.Id, actionType, point);
+        //}
+        private void SetSceneCenter()
+        {
+            if (_scene == null)
+            {
+                return;
+            }
+            var centerPoint = new SKPoint(canvasView.CanvasSize.Width / 2, canvasView.CanvasSize.Height / 2);
+            _scene.ScreenCenter = centerPoint;
+        }
+        private void InitSceneObjects()
+        {
+            _scene = new SKScene(new TestScenereRenderer())
+            {
+                MaxScale = 10,
+                MinScale = 0.3f,
+            };
+            SetSceneCenter();
+            _touchGestureRecognizer = new TouchGestureRecognizer();
+            _sceneGestureResponder = new SceneGestureRenderingResponder(() => canvasView.InvalidateSurface(), _scene, _touchGestureRecognizer)
+            {
+                TouchManipulationMode = TouchManipulationMode.IsotropicScale,
+                MaxFramesPerSecond = 100,
+            };
+            _sceneGestureResponder.StartResponding();
+        }
+
+
+        private void OnPaint(object sender, SkiaSharp.Views.Forms.SKPaintSurfaceEventArgs skPaintSurfaceEventArgs)
+        {
+            if (_scene == null)
+            {
+                InitSceneObjects();
+
+            }
+            SKImageInfo info = skPaintSurfaceEventArgs.Info;
+            SKSurface surface = skPaintSurfaceEventArgs.Surface;
+            SKCanvas canvas = surface.Canvas;
+            _scene.Render(canvas);
+        }
     }
 }

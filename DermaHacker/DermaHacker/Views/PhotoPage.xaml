@@ -3,8 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DermaHacker.Views.PhotoPage"
              xmlns:vm="clr-namespace:DermaHacker.ViewModels"
-             Title="{Binding Title}">
-    
+             xmlns:dermaHacker="clr-namespace:DermaHacker;assembly=DermaHacker"
+             Title="{Binding Title}"
+             xmlns:tt="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
+             xmlns:view="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms">
+
     <ContentPage.BindingContext>
         <vm:PhotoViewModel />
     </ContentPage.BindingContext>
@@ -20,19 +23,24 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ScrollView Grid.Row="0" Grid.Column="0" >
-            <Image x:Name="imgCam"/>
-            <ScrollView.GestureRecognizers>
 
-                <!--<TapGestureRecognizer 
-                        NumberOfTapsRequired="1"
-                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}"		
-                        CommandParameter="{Binding .}">
-                    </TapGestureRecognizer>-->
+        <Grid >
+            <view:SKCanvasView 
+            x:Name="canvasView" 
+            EnableTouchEvents="True" >
+        </view:SKCanvasView>
 
-            </ScrollView.GestureRecognizers>
-        </ScrollView>
+            <Image  x:Name="imgCam"  HorizontalOptions="FillAndExpand" Aspect="Fill"
+                    VerticalOptions="FillAndExpand">
+            <Image.Effects>
+                <tt:TouchEffect 
+                    x:Name="touchEffect"
+                    Capture="True"
+                    TouchAction="OnTouchEffectAction" />
+            </Image.Effects>
 
+        </Image>
+        </Grid>
 
         <Button x:Name="btnCam"
                 Text="SNAP A PIC"
