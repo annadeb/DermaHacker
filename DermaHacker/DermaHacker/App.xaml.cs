@@ -14,7 +14,7 @@ namespace DermaHacker
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            MainPage = new PhotoView();
+            MainPage = new AppShell();
         }
 
         protected override void OnStart()
