@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace DermaHacker.ViewModels
 {
-    public class AboutViewModel : BaseViewModel
+    public class PhotoViewModel : BaseViewModel
     {
-        public AboutViewModel()
+        public PhotoViewModel()
         {
             Title = "About";
             OpenWebCommand = new Command(TakePhoto);
