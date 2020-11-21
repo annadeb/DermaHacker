@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 using DermaHacker.Models.Database;
+using DermaHacker.Views;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace DermaHacker.ViewModels
 {
@@ -12,6 +14,7 @@ namespace DermaHacker.ViewModels
     {
         private string nameAndSurname;
         private DateTime date;
+        private Report report;
 
         public NewItemViewModel()
         {
@@ -33,6 +36,7 @@ namespace DermaHacker.ViewModels
             set => SetProperty(ref nameAndSurname, value);
         }
 
+
         public string Date
         {
             get => DateTime.UtcNow.ToString();
@@ -50,34 +54,18 @@ namespace DermaHacker.ViewModels
 
         private async void OnSave()
         {
-            Item newItem = new Item()
-            {
-                Id = Guid.NewGuid().ToString(),
-                NameAndSurname = NameAndSurname,
-                Date = Date
-            };
-
+            
             //await DataStore.AddItemAsync(newItem);
             //TODO
-            await App.Database.SaveReportAsync(new Report
-            {
-                NameAndSurname = NameAndSurname,
-                Date = DateTime.UtcNow,
-                StandardImagePath = "icon_about.png",
-                ThermoImagePath = "icon_about.png",
-                Length = 22,
-                Width = 10.0,
-                Surface = 40,
-                GranulationTissuePercentage = 3,
-                SludgePercentage = 59,
-                NecrosisPercentage = 25,
-                WoundBaseTemperature = 31,
-                SurroundingsTemperature = 27
-                
-            });
+            this.report = Report.CreateReport();
+            this.report.NameAndSurname = NameAndSurname;
+            this.report.ID = App.Database.GetReportsAsync().Result.Count()+1;
+            await App.Database.SaveReportAsync(this.report);
 
             // This will pop the current page off the navigation stack
-            await Shell.Current.GoToAsync("..");
+            // await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={this.report.ID}");
+            CurrentReport.Instance.ClearCurrentReport();
         }
     }
 }

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SkiaScene;
+﻿using SkiaScene;
 using SkiaSharp;
 
-namespace DermaHacker
+namespace DermaHacker.Services
 {
     public class TestScenereRenderer : ISKSceneRenderer
     {

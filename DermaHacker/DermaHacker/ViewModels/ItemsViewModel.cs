@@ -22,7 +22,7 @@ namespace DermaHacker.ViewModels
 
         public ItemsViewModel()
         {
-            Title = "Browse";
+            Title = "Reports";
             Items = new ObservableCollection<Report>();
             //Items = new ObservableCollection<Item>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());

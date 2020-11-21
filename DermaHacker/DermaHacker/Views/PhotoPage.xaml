@@ -43,7 +43,7 @@
         </Grid>
 
         <Button x:Name="btnCam"
-                Text="SNAP A PIC"
+                Text="Take a picture"
                 Grid.Row="1"
                 Grid.Column="0"
                 Margin="2"

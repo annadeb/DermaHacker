@@ -21,5 +21,25 @@ namespace DermaHacker.Models.Database
         public double GranulationTissuePercentage { get; set; }
         public double SludgePercentage { get; set; }
         public double NecrosisPercentage { get; set; }
+
+        public static Report CreateReport()
+        {
+
+            return new Report()
+            {
+                NameAndSurname = CurrentReport.Instance.NameAndSurname,
+                Date = CurrentReport.Instance.Date,
+                StandardImagePath = CurrentReport.Instance.StandardImagePath,
+                ThermoImagePath = CurrentReport.Instance.ThermoImagePath,
+                Length = CurrentReport.Instance.Length,
+                Width = CurrentReport.Instance.Width,
+                Surface = CurrentReport.Instance.Surface,
+                GranulationTissuePercentage = CurrentReport.Instance.GranulationTissuePercentage,
+                SludgePercentage = CurrentReport.Instance.SludgePercentage,
+                NecrosisPercentage = CurrentReport.Instance.NecrosisPercentage,
+                WoundBaseTemperature = CurrentReport.Instance.WoundBaseTemperature,
+                SurroundingsTemperature = CurrentReport.Instance.SurroundingsTemperature
+            };
+        }
     }
 }

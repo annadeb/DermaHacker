@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Input;
-using DermaHacker.Models.ImagePreprocessing;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using Xamarin.Essentials;
@@ -12,7 +11,7 @@ namespace DermaHacker.ViewModels
     {
         public PhotoViewModel()
         {
-            Title = "About";
+            Title = "Take a picture";
             //TakePhotoCommand = new Command(TakePhotoAsync());
 
             //PhotoTapped = new Command<int[]>(OnTapp());
