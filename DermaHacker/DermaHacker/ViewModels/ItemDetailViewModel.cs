@@ -10,20 +10,20 @@ namespace DermaHacker.ViewModels
     public class ItemDetailViewModel : BaseViewModel
     {
         private string itemId;
-        private string text;
-        private string description;
+        private string nameAndSurname;
+        private string date;
         public string Id { get; set; }
 
-        public string Text
+        public string NameAndSurname
         {
-            get => text;
-            set => SetProperty(ref text, value);
+            get => nameAndSurname;
+            set => SetProperty(ref nameAndSurname, value);
         }
 
-        public string Description
+        public string Date
         {
-            get => description;
-            set => SetProperty(ref description, value);
+            get => date;
+            set => SetProperty(ref date, value);
         }
 
         public string ItemId
@@ -45,8 +45,8 @@ namespace DermaHacker.ViewModels
             {
                 var item = await DataStore.GetItemAsync(itemId);
                 Id = item.Id;
-                Text = item.Text;
-                Description = item.Description;
+                NameAndSurname = item.NameAndSurname;
+                Date = item.Date;
             }
             catch (Exception)
             {

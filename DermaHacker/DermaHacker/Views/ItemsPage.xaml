@@ -4,7 +4,8 @@
              x:Class="DermaHacker.Views.ItemsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:DermaHacker.ViewModels"  
-             xmlns:model="clr-namespace:DermaHacker.Models"  
+             xmlns:model="clr-namespace:DermaHacker.Models"
+             xmlns:database="clr-namespace:DermaHacker.Models.Database;assembly=DermaHacker"
              x:Name="BrowseItemsPage">
 
     <ContentPage.ToolbarItems>
@@ -20,15 +21,15 @@
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:Item">
-                        <Label Text="{Binding Text}" 
-                            LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" />
-                        <Label Text="{Binding Description}" 
-                            LineBreakMode="NoWrap"
-                            Style="{DynamicResource ListItemDetailTextStyle}"
-                            FontSize="13" />
+                    <StackLayout Padding="10" x:DataType="database:Report">
+                        <Label Text="{Binding NameAndSurname}"
+                               LineBreakMode="NoWrap" 
+                               Style="{DynamicResource ListItemTextStyle}" 
+                               FontSize="16"/>
+                        <Label Text="{Binding Date}"
+                               LineBreakMode="NoWrap"
+                               Style="{DynamicResource ListItemTextStyle}" 
+                               FontSize="13"/>
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"

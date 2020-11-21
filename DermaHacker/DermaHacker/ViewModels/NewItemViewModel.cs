@@ -3,14 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using DermaHacker.Models.Database;
 using Xamarin.Forms;
 
 namespace DermaHacker.ViewModels
 {
     public class NewItemViewModel : BaseViewModel
     {
-        private string text;
-        private string description;
+        private string nameAndSurname;
+        private string date;
 
         public NewItemViewModel()
         {
@@ -22,20 +23,20 @@ namespace DermaHacker.ViewModels
 
         private bool ValidateSave()
         {
-            return !String.IsNullOrWhiteSpace(text)
-                && !String.IsNullOrWhiteSpace(description);
+            return !String.IsNullOrWhiteSpace(nameAndSurname)
+                && !String.IsNullOrWhiteSpace(date);
         }
 
-        public string Text
+        public string NameAndSurname
         {
-            get => text;
-            set => SetProperty(ref text, value);
+            get => nameAndSurname;
+            set => SetProperty(ref nameAndSurname, value);
         }
 
-        public string Description
+        public string Date
         {
-            get => description;
-            set => SetProperty(ref description, value);
+            get => date;
+            set => SetProperty(ref date, value);
         }
 
         public Command SaveCommand { get; }
@@ -52,11 +53,36 @@ namespace DermaHacker.ViewModels
             Item newItem = new Item()
             {
                 Id = Guid.NewGuid().ToString(),
-                Text = Text,
-                Description = Description
+                NameAndSurname = NameAndSurname,
+                Date = Date
             };
 
-            await DataStore.AddItemAsync(newItem);
+            //await DataStore.AddItemAsync(newItem);
+            //TODO
+            await App.Database.SaveReportAsync(new Report
+            {
+                NameAndSurname = NameAndSurname,
+                Date = DateTime.UtcNow,
+                StandardImagePath = "icon_about.png",
+                ThermoImagePath = "icon_about.png",
+                //Size = new Models.Database.Size()
+                //{
+                //    Length = 22,
+                //    Width = 10,
+                //    Surface = 40,
+                //},
+                //WoundBase = new WoundBase()
+                //{
+                //    GranulationTissuePercentage = 3,
+                //    SludgePercentage = 59,
+                //    NecrosisPercentage = 25
+                //},
+                //Temperature = new Temperature()
+                //{
+                //    WoundBase = 31,
+                //    Surroundings = 27
+                //}
+            });
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");

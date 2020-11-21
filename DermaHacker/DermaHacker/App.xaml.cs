@@ -1,6 +1,8 @@
 ﻿using DermaHacker.Services;
 using DermaHacker.Views;
 using System;
+using System.IO;
+using DermaHacker.Models.Database;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -8,13 +10,25 @@ namespace DermaHacker
 {
     public partial class App : Application
     {
-
+        static DermaHackerDatabase database;
         public App()
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            DependencyService.Register<DermaHackerDatabase>();
             MainPage = new AppShell();
+        }
+
+        public static DermaHackerDatabase Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new DermaHackerDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DermaHacker.db3"));
+                }
+                return database;
+            }
         }
 
         protected override void OnStart()

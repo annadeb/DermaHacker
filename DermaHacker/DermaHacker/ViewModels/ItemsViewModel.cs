@@ -1,29 +1,33 @@
 ﻿using DermaHacker.Models;
 using DermaHacker.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using DermaHacker.Models.Database;
 using Xamarin.Forms;
 
 namespace DermaHacker.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        private Item _selectedItem;
+        private Report _selectedItem;
 
-        public ObservableCollection<Item> Items { get; }
+        public ObservableCollection<Report> Items { get; set; }
         public Command LoadItemsCommand { get; }
         public Command AddItemCommand { get; }
-        public Command<Item> ItemTapped { get; }
+        public Command<Report> ItemTapped { get; }
 
         public ItemsViewModel()
         {
             Title = "Browse";
-            Items = new ObservableCollection<Item>();
+            Items = new ObservableCollection<Report>();
+            //Items = new ObservableCollection<Item>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            ItemTapped = new Command<Item>(OnItemSelected);
+            ItemTapped = new Command<Report>(OnItemSelected);
 
             AddItemCommand = new Command(OnAddItem);
         }
@@ -35,7 +39,7 @@ namespace DermaHacker.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                var items = await App.Database.GetReportsAsync();
                 foreach (var item in items)
                 {
                     Items.Add(item);
@@ -51,13 +55,13 @@ namespace DermaHacker.ViewModels
             }
         }
 
-        public void OnAppearing()
+        public async Task OnAppearing()
         {
             IsBusy = true;
             SelectedItem = null;
         }
 
-        public Item SelectedItem
+        public Report SelectedItem
         {
             get => _selectedItem;
             set
@@ -72,13 +76,13 @@ namespace DermaHacker.ViewModels
             await Shell.Current.GoToAsync(nameof(NewItemPage));
         }
 
-        async void OnItemSelected(Item item)
+        async void OnItemSelected(Report item)
         {
             if (item == null)
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
+            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.ID}");
         }
     }
 }

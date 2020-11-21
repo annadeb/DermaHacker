@@ -5,10 +5,33 @@
              Title="{Binding Title}">
 
     <StackLayout Spacing="20" Padding="15">
-        <Label Text="Text:" FontSize="Medium" />
-        <Label Text="{Binding Text}" FontSize="Small"/>
-        <Label Text="Description:" FontSize="Medium" />
-        <Label Text="{Binding Description}" FontSize="Small"/>
+        <Label Text="Name and surname:" FontSize="Medium" />
+        <Label Text="{Binding NameAndSurname}" FontSize="Small"/>
+        <Label Text="Date:" FontSize="Medium" />
+        <Label Text="{Binding Date}" FontSize="Small"/>
+        <Image Source="{Binding StandardImagePath}" />
+        <Image Source="{Binding ThermoImagePath}" />
+        <Label Text="Size:" FontSize="Medium" />
+        <Label Text="Length:" FontSize="Small" />
+        <Label Text="{Binding Size.Length}" FontSize="Small"/>
+        <Label Text="Width:" FontSize="Small" />
+        <Label Text="{Binding Size.Width}" FontSize="Small"/>
+        <Label Text="Surface:" FontSize="Small" />
+        <Label Text="{Binding Size.Surface}" FontSize="Small"/>
+
+        <Label Text="Wound base:" FontSize="Medium" />
+        <Label Text="Granulation Tissue:" FontSize="Small" />
+        <Label Text="{Binding WoundBase.GranulationTissuePercentage}" FontSize="Small"/>
+        <Label Text="Sludge:" FontSize="Small" />
+        <Label Text="{Binding WoundBase.SludgePercentage}" FontSize="Small"/>
+        <Label Text="Necrosis:" FontSize="Small" />
+        <Label Text="{Binding WoundBase.NecrosisPercentage}" FontSize="Small"/>
+
+        <Label Text="Temperature:" FontSize="Medium" />
+        <Label Text="Wound base:" FontSize="Small" />
+        <Label Text="{Binding Temperature.WoundBase}" FontSize="Small"/>
+        <Label Text="Surroundings:" FontSize="Small" />
+        <Label Text="{Binding Temperature.Surroundings}" FontSize="Small"/>
     </StackLayout>
     
 </ContentPage>
