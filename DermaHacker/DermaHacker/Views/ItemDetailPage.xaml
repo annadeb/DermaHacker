@@ -11,7 +11,7 @@
             <Label Text="Date:" FontSize="Medium" />
             <Label Text="{Binding Date}" FontSize="Small"/>
             <Image Source="{Binding StandardImagePath}" />
-            <Image Source="{Binding ThermoImagePath}" />
+            <!--<Image Source="{Binding ThermoImagePath}" />-->
             <Label Text="Size:" FontSize="Medium" />
             <Label Text="Length:" FontSize="Small" />
             <Label Text="{Binding Length}" FontSize="Small"/>
@@ -28,11 +28,11 @@
             <Label Text="Necrosis:" FontSize="Small" />
             <Label Text="{Binding NecrosisPercentage}" FontSize="Small"/>
 
-            <Label Text="Temperature:" FontSize="Medium" />
+            <!--<Label Text="Temperature:" FontSize="Medium" />
             <Label Text="Wound base:" FontSize="Small" />
             <Label Text="{Binding WoundBaseTemperature}" FontSize="Small"/>
             <Label Text="Surroundings:" FontSize="Small" />
-            <Label Text="{Binding SurroundingsTemperature}" FontSize="Small"/>
+            <Label Text="{Binding SurroundingsTemperature}" FontSize="Small"/>-->
             <Button Text="Export" Command="{Binding ExportCommand}"/>
 
         </StackLayout>

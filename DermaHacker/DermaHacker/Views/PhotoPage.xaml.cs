@@ -67,6 +67,7 @@ namespace DermaHacker.Views
                     this.Title = "Choose a central point of a wound";
                     targetImageByte = ImagePreprocessing.GetByteArrayFromStream(photo.GetStream());
                     var imagesource = ImagePreprocessing.GetImageSourceFromByteArray(targetImageByte);
+                    CurrentReport.Instance.StandardImagePath = photo.AlbumPath;
                     imgCam.Source = imagesource;
                     //  System.Drawing.Bitmap bitmap = ImagePreprocessing.GetBitmapFromImageSource(ImagePreprocessing.GetImageSourceFromByteArray(TargetImageByte));
                     // Mat
@@ -113,6 +114,21 @@ namespace DermaHacker.Views
 
                 //TODO wysylanie do serwera
 
+            
+            CurrentReport.Instance.Date = DateTime.UtcNow;
+           // CurrentReport.Instance.ThermoImagePath = "icon_about.png";
+            CurrentReport.Instance.Length = 0;
+            CurrentReport.Instance.Width = 0;
+            CurrentReport.Instance.Surface = 0;
+            CurrentReport.Instance.GranulationTissuePercentage = 0;
+            CurrentReport.Instance.SludgePercentage = 0;
+            CurrentReport.Instance.NecrosisPercentage = 0;
+            //CurrentReport.Instance.WoundBaseTemperature = 0;
+           // CurrentReport.Instance.SurroundingsTemperature = 0;
+            var secondPage = new NewItemPage();
+            
+            await Navigation.PushAsync(secondPage);
+        }
                 ImageData image = new ImageData();
                 image.CoordinateXY = new int[] {  (int)point.X, (int)point.Y };
                 image.Base64 = Convert.ToBase64String(targetImageByte);
@@ -129,15 +145,15 @@ namespace DermaHacker.Views
 
                     CurrentReport.Instance.Date = DateTime.UtcNow;
                     CurrentReport.Instance.StandardImagePath = "icon_about.png";
-                    CurrentReport.Instance.ThermoImagePath = "icon_about.png";
+                    //CurrentReport.Instance.ThermoImagePath = "icon_about.png";
                     CurrentReport.Instance.Length = 0;
                     CurrentReport.Instance.Width = 0;
                     CurrentReport.Instance.Surface = 0;
                     CurrentReport.Instance.GranulationTissuePercentage = 0;
                     CurrentReport.Instance.SludgePercentage = 0;
                     CurrentReport.Instance.NecrosisPercentage = 0;
-                    CurrentReport.Instance.WoundBaseTemperature = 0;
-                    CurrentReport.Instance.SurroundingsTemperature = 0;
+                   // CurrentReport.Instance.WoundBaseTemperature = 0;
+                   // CurrentReport.Instance.SurroundingsTemperature = 0;
                     var secondPage = new NewItemPage();
 
                     await Navigation.PushAsync(secondPage);
