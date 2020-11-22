@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Android.Content;
 using DermaHacker.Models;
+using DermaHacker.Models.Connection;
 using DermaHacker.Models.Database;
 using DermaHacker.Models.Extension;
 using DermaHacker.Models.ImageAnalyse;
@@ -47,10 +48,12 @@ namespace DermaHacker.Views
         //    }
 
         //}
+        byte[] targetImageByte;
         private async void BtnCam_Clicked(object sender, EventArgs e)
         {
             try
             {
+
 
                 var photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions()
                 {
@@ -62,7 +65,7 @@ namespace DermaHacker.Views
                 if (photo != null)
                 {
                     this.Title = "Choose a central point of a wound";
-                    byte[] targetImageByte = ImagePreprocessing.GetByteArrayFromStream(photo.GetStream());
+                    targetImageByte = ImagePreprocessing.GetByteArrayFromStream(photo.GetStream());
                     var imagesource = ImagePreprocessing.GetImageSourceFromByteArray(targetImageByte);
                     imgCam.Source = imagesource;
                     //  System.Drawing.Bitmap bitmap = ImagePreprocessing.GetBitmapFromImageSource(ImagePreprocessing.GetImageSourceFromByteArray(TargetImageByte));
@@ -91,34 +94,59 @@ namespace DermaHacker.Views
                 await DisplayAlert("Error", ex.Message.ToString(), "Ok");
             }
         }
+        private bool isRun = false;
         private async void OnTouchEffectAction(object sender, TouchActionEventArgs args)
         {
-            var viewPoint = args.Location;
-            SKPoint point =
-                new SKPoint((float)(canvasView.CanvasSize.Width * viewPoint.X / canvasView.Width),
-                    (float)(canvasView.CanvasSize.Height * viewPoint.Y / canvasView.Height));
+            if (!isRun)
+            {
+                isRun = true;
+                var viewPoint = args.Location;
+                SKPoint point =
+                    new SKPoint((float)(canvasView.CanvasSize.Width * viewPoint.X / canvasView.Width),
+                        (float)(canvasView.CanvasSize.Height * viewPoint.Y / canvasView.Height));
 
-            var actionType = args.Type;
-            _touchGestureRecognizer.ProcessTouchEvent(args.Id, actionType, point);
+                var actionType = args.Type;
+                _touchGestureRecognizer.ProcessTouchEvent(args.Id, actionType, point);
+
+                ICommanderReceivedData commanderReceivedData = new ImageStored();
+                RequestClass requestClass = RequestClass.Instance(commanderReceivedData);
+
+                //TODO wysylanie do serwera
+
+                ImageData image = new ImageData();
+                image.CoordinateXY = new int[] {  (int)point.X, (int)point.Y };
+                image.Base64 = Convert.ToBase64String(targetImageByte);
+                image.Id = 1;
+                image = requestClass.SendAndTakeImage(image);
+
+                if (image.Base64 != null)
+                {
+                    targetImageByte = Convert.FromBase64String(image.Base64);
+                    imgCam.Source = ImagePreprocessing.GetImageSourceFromByteArray(targetImageByte);
+                    isRun = false;
 
 
-            //TODO wysylanie do serwera
 
-            
-            CurrentReport.Instance.Date = DateTime.UtcNow;
-            CurrentReport.Instance.StandardImagePath = "icon_about.png";
-            CurrentReport.Instance.ThermoImagePath = "icon_about.png";
-            CurrentReport.Instance.Length = 0;
-            CurrentReport.Instance.Width = 0;
-            CurrentReport.Instance.Surface = 0;
-            CurrentReport.Instance.GranulationTissuePercentage = 0;
-            CurrentReport.Instance.SludgePercentage = 0;
-            CurrentReport.Instance.NecrosisPercentage = 0;
-            CurrentReport.Instance.WoundBaseTemperature = 0;
-            CurrentReport.Instance.SurroundingsTemperature = 0;
-            var secondPage = new NewItemPage();
-            
-            await Navigation.PushAsync(secondPage);
+                    CurrentReport.Instance.Date = DateTime.UtcNow;
+                    CurrentReport.Instance.StandardImagePath = "icon_about.png";
+                    CurrentReport.Instance.ThermoImagePath = "icon_about.png";
+                    CurrentReport.Instance.Length = 0;
+                    CurrentReport.Instance.Width = 0;
+                    CurrentReport.Instance.Surface = 0;
+                    CurrentReport.Instance.GranulationTissuePercentage = 0;
+                    CurrentReport.Instance.SludgePercentage = 0;
+                    CurrentReport.Instance.NecrosisPercentage = 0;
+                    CurrentReport.Instance.WoundBaseTemperature = 0;
+                    CurrentReport.Instance.SurroundingsTemperature = 0;
+                    var secondPage = new NewItemPage();
+
+                    await Navigation.PushAsync(secondPage);
+                }
+                else
+                {
+                    IsBusy = false;
+                }
+            }
         }
         //private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
         //{

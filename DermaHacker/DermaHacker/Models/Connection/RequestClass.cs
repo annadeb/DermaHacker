@@ -60,15 +60,15 @@ namespace DermaHacker.Models.Connection
             client = new HttpClient(clientHandler);
             client.BaseAddress = new Uri(url);
             // Add an Accept header for JSON format.    
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+      //      client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             // List all Names.    
             // = JsonConvert.SerializeObject(image);
             var json = JsonConvert.SerializeObject(image);
-         ///   HttpContent httpContent = new StringContent(json, Encoding.UTF8, "Image/com");
+            ///   HttpContent httpContent = new StringContent(json, Encoding.UTF8, "Image/com");
 
-         //   HttpResponseMessage response = client.PostAsync("Image/com", httpContent).Result;  // Blocking call! 
+            //   HttpResponseMessage response = client.PostAsync("Image/com", httpContent).Result;  // Blocking call! 
 
-
+            client.Timeout = TimeSpan.FromSeconds(30000);
 
             var httpRequestMessage = new HttpRequestMessage
             {
@@ -90,7 +90,7 @@ namespace DermaHacker.Models.Connection
             {
                 Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
             }
-            return null;
+            return new ImageData();
         }
 
     }

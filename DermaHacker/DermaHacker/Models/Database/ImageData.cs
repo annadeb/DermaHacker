@@ -11,8 +11,12 @@ namespace DermaHacker.Models.Database
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
-        [JsonProperty(PropertyName = "dimension")]
-        public double[] coordinateXY { get; set; }
+        [JsonProperty(PropertyName = "coordinateXY")]
+        public int[] CoordinateXY { get; set; }
+
+
+        [JsonProperty(PropertyName = "matlab")]
+        public FromMatlab Matlab { get; set; }
 
         [JsonProperty(PropertyName = "base64")]
         public string Base64 { get; set; }
@@ -23,5 +27,14 @@ namespace DermaHacker.Models.Database
        // public Guid guid = new Guid();
 
       
+    }
+    public class FromMatlab
+    {
+
+        public string Width { get; set; }
+
+        public string Height { get; set; }
+
+        public string Arena { get; set; }
     }
 }
