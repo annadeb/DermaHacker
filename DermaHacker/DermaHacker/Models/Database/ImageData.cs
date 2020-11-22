@@ -36,5 +36,8 @@ namespace DermaHacker.Models.Database
         public string Height { get; set; }
 
         public string Arena { get; set; }
+        public string MatrixC1 { get; set; }
+        public string MatrixC2 { get; set; }
+        public string MatrixC3 { get; set; }
     }
 }

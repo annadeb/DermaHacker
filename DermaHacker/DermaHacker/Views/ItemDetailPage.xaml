@@ -8,25 +8,45 @@
         <StackLayout Spacing="20" Padding="15" >
             <!--<Label Text="Name and surname:" FontSize="Medium" />
             <Label Text="{Binding NameAndSurname}" FontSize="Small"/>-->
-            <Label Text="Date:" FontSize="Medium" />
-            <Label Text="{Binding Date}" FontSize="Small"/>
+            <StackLayout Orientation="Horizontal">
+
+                <Label Text="Date:" FontSize="Medium" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding Date}" FontSize="Medium"  HorizontalOptions="End" TextColor="{StaticResource Primary}"/>
+            </StackLayout>
             <Image Source="{Binding StandardImagePath}" />
             <!--<Image Source="{Binding ThermoImagePath}" />-->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
             <Label Text="Size:" FontSize="Medium" />
-            <Label Text="Length:" FontSize="Small" />
-            <Label Text="{Binding Length}" FontSize="Small"/>
-            <Label Text="Width:" FontSize="Small" />
-            <Label Text="{Binding Width}" FontSize="Small"/>
-            <Label Text="Surface:" FontSize="Small" />
-            <Label Text="{Binding Surface}" FontSize="Small"/>
+                <Label Text="Length:" FontSize="Medium" HorizontalOptions="StartAndExpand"/>
+                <Label Text="{Binding Length}" FontSize="Medium" HorizontalOptions="FillAndExpand" TextColor="{StaticResource Primary}"/>
+            </StackLayout>
 
-            <Label Text="Wound base:" FontSize="Medium" />
-            <Label Text="Granulation Tissue:" FontSize="Small" />
-            <Label Text="{Binding GranulationTissuePercentage}" FontSize="Small"/>
-            <Label Text="Sludge:" FontSize="Small" />
-            <Label Text="{Binding SludgePercentage}" FontSize="Small"/>
-            <Label Text="Necrosis:" FontSize="Small" />
-            <Label Text="{Binding NecrosisPercentage}" FontSize="Small"/>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Width:" FontSize="Medium"   Margin="0 0 0 54" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding Width}" FontSize="Medium"   HorizontalOptions="FillAndExpand" TextColor="{StaticResource Primary}"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Surface:" FontSize="Medium"   Margin="0 0 0 38"  HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding Surface}" FontSize="Medium"    HorizontalOptions="FillAndExpand" TextColor="{StaticResource Primary}"/>
+            </StackLayout>
+
+
+            <Label Text="Wound base:" FontSize="Medium" HorizontalOptions="StartAndExpand" Margin="0 0 0 1" />
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Granulation Tissue:" FontSize="Medium" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding GranulationTissuePercentage}" FontSize="Medium" HorizontalOptions="FillAndExpand" TextColor="{StaticResource Primary}"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Sludge:" FontSize="Medium" HorizontalOptions="StartAndExpand" Margin="0 0 0 96" />
+                <Label Text="{Binding SludgePercentage}" FontSize="Medium" HorizontalOptions="FillAndExpand" TextColor="{StaticResource Primary}"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Necrosis:" FontSize="Medium"  HorizontalOptions="StartAndExpand" Margin="0 0 0 79"/>
+                <Label Text="{Binding NecrosisPercentage}" FontSize="Medium" HorizontalOptions="FillAndExpand" TextColor="{StaticResource Primary}"/>
+            </StackLayout>
 
             <!--<Label Text="Temperature:" FontSize="Medium" />
             <Label Text="Wound base:" FontSize="Small" />

@@ -54,7 +54,7 @@ namespace DermaHacker.Views
             try
             {
 
-
+                App.IsWorks = false;
                 var photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions()
                 {
                     DefaultCamera = Plugin.Media.Abstractions.CameraDevice.Rear,
@@ -95,12 +95,11 @@ namespace DermaHacker.Views
                 await DisplayAlert("Error", ex.Message.ToString(), "Ok");
             }
         }
-        private bool isRun = false;
         private async void OnTouchEffectAction(object sender, TouchActionEventArgs args)
         {
-            if (!isRun)
+            if (!App.IsWorks)
             {
-                isRun = true;
+                App.IsWorks = true;
                 var viewPoint = args.Location;
                 SKPoint point =
                     new SKPoint((float)(canvasView.CanvasSize.Width * viewPoint.X / canvasView.Width),
@@ -112,20 +111,6 @@ namespace DermaHacker.Views
                 ICommanderReceivedData commanderReceivedData = new ImageStored();
                 RequestClass requestClass = RequestClass.Instance(commanderReceivedData);
 
-                //TODO wysylanie do serwera
-
-            
-            CurrentReport.Instance.Date = DateTime.UtcNow;
-           // CurrentReport.Instance.ThermoImagePath = "icon_about.png";
-            CurrentReport.Instance.Length = 0;
-            CurrentReport.Instance.Width = 0;
-            CurrentReport.Instance.Surface = 0;
-            CurrentReport.Instance.GranulationTissuePercentage = 0;
-            CurrentReport.Instance.SludgePercentage = 0;
-            CurrentReport.Instance.NecrosisPercentage = 0;
-            //CurrentReport.Instance.WoundBaseTemperature = 0;
-           // CurrentReport.Instance.SurroundingsTemperature = 0;
-            
        
                 ImageData image = new ImageData();
                 image.CoordinateXY = new int[] {  (int)point.X, (int)point.Y };
@@ -137,19 +122,27 @@ namespace DermaHacker.Views
                 {
                     targetImageByte = Convert.FromBase64String(image.Base64);
                     imgCam.Source = ImagePreprocessing.GetImageSourceFromByteArray(targetImageByte);
-                    isRun = false;
-
-
-
-              
-                    var secondPage = new NewItemPage();
-
-                    await Navigation.PushAsync(secondPage);
+               //     App.IsWorks = false;
                 }
                 else
                 {
                     IsBusy = false;
+         //           App.IsWorks = false;
                 }
+
+                CurrentReport.Instance.Date = DateTime.UtcNow;
+                // CurrentReport.Instance.ThermoImagePath = "icon_about.png";
+                CurrentReport.Instance.Length = Math.Round(double.Parse(image.Matlab.Height),2);
+                CurrentReport.Instance.Width = Math.Round(double.Parse(image.Matlab.Width),2);
+                CurrentReport.Instance.Surface = Math.Round(double.Parse(image.Matlab.Arena),2);
+                CurrentReport.Instance.GranulationTissuePercentage = Math.Round(double.Parse(image.Matlab.MatrixC1), 2);
+                CurrentReport.Instance.SludgePercentage = Math.Round(double.Parse(image.Matlab.MatrixC2), 2);
+                CurrentReport.Instance.NecrosisPercentage = Math.Round(double.Parse(image.Matlab.MatrixC3), 2);
+                //CurrentReport.Instance.WoundBaseTemperature = 0;
+                // CurrentReport.Instance.SurroundingsTemperature = 0;
+                var secondPage = new NewItemPage();
+
+                await Navigation.PushAsync(secondPage);
             }
         }
         //private void OnTouchEffectAction(object sender, TouchActionEventArgs args)

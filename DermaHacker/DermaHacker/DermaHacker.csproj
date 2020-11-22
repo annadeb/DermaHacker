@@ -24,21 +24,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Java.Interop">
-      <HintPath>..\..\..\..\Folder bez nazwy\Java.Interop.dll</HintPath>
+	  <Reference Include="Java.Interop">
+		  <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v1.0\Java.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Android">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v9.0\Mono.Android.dll</HintPath>
+	  <Reference Include="Mono.Android">
+		  <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v9.0\Mono.Android.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp.Views.Forms">
       <HintPath>..\..\..\..\Folder bez nazwy\SkiaSharp.Views.Forms.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.Support.Compat">
-      <HintPath>..\..\..\..\Folder bez nazwy\Xamarin.Android.Support.Compat.dll</HintPath>
+	  <Reference Include="Xamarin.Android.Support.Compat">
+		  <HintPath>..\..\..\..\..\..\..\..\Microsoft\Xamarin\NuGet\xamarin.android.support.compat\28.0.0.3\lib\monoandroid90\Xamarin.Android.Support.Compat.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.Platform.Android">
-      <HintPath>E:\Microsoft\Xamarin\NuGet\xamarin.forms\4.8.0.1451\lib\MonoAndroid90\Xamarin.Forms.Platform.Android.dll</HintPath>
-    </Reference>
+	  <Reference Include="Xamarin.Forms.Platform.Android">
+	    <HintPath>..\..\..\..\..\..\..\..\Microsoft\Xamarin\NuGet\xamarin.forms\4.8.0.1451\lib\MonoAndroid90\Xamarin.Forms.Platform.Android.dll</HintPath>
+	  </Reference>
   </ItemGroup>
 
   <ItemGroup>

@@ -40,9 +40,9 @@ namespace DermaHacker.ViewModels
         private double surface;
         //private double woundBaseTemperature;
         //private double surroundingsTemperature;
-        private double granulationTissuePercentage;
-        private double sludgePercentage;
-        private double necrosisPercentage;
+        private string granulationTissuePercentage;
+        private string sludgePercentage;
+        private string necrosisPercentage;
 
         public Command ExportCommand { get; }
 
@@ -117,19 +117,19 @@ namespace DermaHacker.ViewModels
         //    set => SetProperty(ref surroundingsTemperature, value);
         //}
 
-        public double GranulationTissuePercentage
+        public string GranulationTissuePercentage
         {
             get => granulationTissuePercentage;
             set => SetProperty(ref granulationTissuePercentage, value);
         }
 
-        public double SludgePercentage
+        public string SludgePercentage
         {
             get => sludgePercentage;
             set => SetProperty(ref sludgePercentage, value);
         }
 
-        public double NecrosisPercentage
+        public string NecrosisPercentage
         {
             get => necrosisPercentage;
             set => SetProperty(ref necrosisPercentage, value);
@@ -143,7 +143,7 @@ namespace DermaHacker.ViewModels
                 var item = await App.Database.GetReportAsync(int.Parse(itemId));
                 Id = item.ID.ToString();
                 NameAndSurname = item.NameAndSurname;
-                Date = item.Date.ToString("g", CultureInfo.CreateSpecificCulture("en-us"));
+                Date = item.Date.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern);
                 StandardImagePath = item.StandardImagePath;
                 //ThermoImagePath = item.ThermoImagePath;
                 Length = item.Length;
@@ -151,9 +151,9 @@ namespace DermaHacker.ViewModels
                 Surface = item.Surface;
                 //WoundBaseTemperature = item.WoundBaseTemperature;
                 //SurroundingsTemperature = item.SurroundingsTemperature;
-                GranulationTissuePercentage = item.GranulationTissuePercentage;
-                SludgePercentage = item.SludgePercentage;
-                NecrosisPercentage = item.NecrosisPercentage;
+                GranulationTissuePercentage = (item.GranulationTissuePercentage / 100).ToString()+"%";
+                SludgePercentage = (item.SludgePercentage/100).ToString() + "%";
+                NecrosisPercentage =( item.NecrosisPercentage / 100).ToString() + "%";
             }
             catch (Exception)
             {
@@ -180,33 +180,35 @@ namespace DermaHacker.ViewModels
 
             //Assembly assembly = typeof(App).GetTypeInfo().Assembly;
 
-            byte[] buffer;
-            byte[] buffer2;
-            PdfBitmap image;
-            using (Stream stream2 = r.BaseStream)
-            {
-                long length = stream2.Length;
-                buffer = new byte[length];
-                stream2.Read(buffer, 0, (int) length);
-                buffer2 = ResizeImage(buffer, 300,400);
-                stream2.Read(buffer2, 0, (int)buffer2.Length);
-                image = new PdfBitmap(stream2);
-            }
+            //byte[] buffer;
+            //byte[] buffer2;
+            //PdfBitmap image;
+            //using (Stream stream2 = r.BaseStream)
+            //{
+            //    long length = stream2.Length;
+            //    buffer = new byte[length];
+            //    stream2.Read(buffer, 0, (int) length);
+            //    buffer2 = ResizeImage(buffer, 300,400);
+            //    stream2.Read(buffer2, 0, (int)buffer2.Length);
+            //    image = new PdfBitmap(stream2);
+            //}
 
-            //Draw the image
-            graphics.DrawImage(image, 40, 0);
+            ////Draw the image
+            //graphics.DrawImage(image, 40, 0);
+            PdfFont titleFont = new PdfStandardFont(PdfFontFamily.Helvetica, 28);
+            graphics.DrawString("Derma-Hacker Report", titleFont, PdfBrushes.Black, new PointF(40, 20));
 
-            graphics.DrawString("Name, surname: " + NameAndSurname, font, PdfBrushes.Black, new PointF(40, 520));
-            graphics.DrawString("Date: " + Date, font, PdfBrushes.Black, new PointF(40, 540));
-            graphics.DrawString("Size: ", font, PdfBrushes.Black, new PointF(40, 560));
-            graphics.DrawString("Length: " + Length + " cm", font, PdfBrushes.Black, new PointF(60, 580));
-            graphics.DrawString("Width: " + Width + " cm", font, PdfBrushes.Black, new PointF(60, 600));
-            graphics.DrawString("Surface: " + Surface + " cm^2", font, PdfBrushes.Black, new PointF(40, 620));
-            graphics.DrawString("Wound base: ", font, PdfBrushes.Black, new PointF(40, 640));
+            graphics.DrawString("Name, surname: " + NameAndSurname, font, PdfBrushes.Black, new PointF(40, 120));
+            graphics.DrawString("Date: " + Date, font, PdfBrushes.Black, new PointF(40, 140));
+            graphics.DrawString("Size: ", font, PdfBrushes.Black, new PointF(40, 160));
+            graphics.DrawString("Length: " + Length + " cm", font, PdfBrushes.Black, new PointF(60, 180));
+            graphics.DrawString("Width: " + Width + " cm", font, PdfBrushes.Black, new PointF(60, 200));
+            graphics.DrawString("Surface: " + Surface + " cm^2", font, PdfBrushes.Black, new PointF(40, 220));
+            graphics.DrawString("Wound base: ", font, PdfBrushes.Black, new PointF(40, 240));
             graphics.DrawString("Granulation Tissue: " + GranulationTissuePercentage + "%", font, PdfBrushes.Black,
-                new PointF(60, 660));
-            graphics.DrawString("Sludge: " + SludgePercentage + "%", font, PdfBrushes.Black, new PointF(60, 680));
-            graphics.DrawString("Necrosis: " + NecrosisPercentage + "%", font, PdfBrushes.Black, new PointF(60, 700));
+                new PointF(60, 260));
+            graphics.DrawString("Sludge: " + SludgePercentage + "%", font, PdfBrushes.Black, new PointF(60, 280));
+            graphics.DrawString("Necrosis: " + NecrosisPercentage + "%", font, PdfBrushes.Black, new PointF(60, 300));
             //graphics.DrawString("Temperature: ", font, PdfBrushes.Black, new PointF(40, 720));
             //graphics.DrawString("Woundbase: " + WoundBaseTemperature + " C", font, PdfBrushes.Black,
             //    new PointF(60, 740));

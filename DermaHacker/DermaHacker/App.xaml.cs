@@ -10,6 +10,8 @@ namespace DermaHacker
 {
     public partial class App : Application
     {
+
+        public static bool IsWorks = false;
         static DermaHackerDatabase database;
         public App()
         {
